@@ -79,22 +79,15 @@ function boxIt (array) {
     return string;
 }
 
-function readTextFile(file) {
-    let XMLHttpRequest = require('xhr2');
-    let rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function ()
-    {
-        if(rawFile.readyState === 4)
-        {
-            if(rawFile.status === 200 || rawFile.status == 0)
-            {
-                let allText = rawFile.responseText;
-                alert(allText);
-            }
-        }
-    }
-    rawFile.send(null);
+// (A) FILE SYSTEM MODULE
+const fs = require("fs");
+ 
+// (B) READ CSV INTO STRING
+var data = fs.readFileSync(process.argv[2], "utf8");
+ 
+// (C) STRING TO ARRAY
+data = data.split("\n\n"); // SPLIT ROWS
+for (let i in data) { // SPLIT COLUMNS
+  data[i] = data[i].split(",");
 }
-
-console.log(readTextFile(process.argv[2]));
+console.log(boxIt(data));
