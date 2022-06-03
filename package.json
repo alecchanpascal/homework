@@ -4,8 +4,10 @@
   "description": "package to run boxit.js without node prefix",
   "main": "boxit.js",
   "scripts": {
-    "test": "boxit.js",
-    "local": "boxit.js"
+    "test": "echo: 'no test'"
+  },
+  "bin" : {
+    "boxit" : "./boxit.js"
   },
   "repository": {
     "type": "git",

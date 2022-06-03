@@ -1,4 +1,4 @@
-#!"/home/nimbus-user/homework/boxit.js"
+#! /usr/bin/env node
 
 //function to draw horizontal lines - used to fill in box length
 function drawLine (num) {
