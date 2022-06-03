@@ -79,10 +79,9 @@ function boxIt (array) {
     return string;
 }
 
-function readTextFile(file)
-{
+function readTextFile(file) {
     let XMLHttpRequest = require('xhr2');
-    var rawFile = new XMLHttpRequest();
+    let rawFile = new XMLHttpRequest();
     rawFile.open("GET", file, false);
     rawFile.onreadystatechange = function ()
     {
@@ -90,7 +89,7 @@ function readTextFile(file)
         {
             if(rawFile.status === 200 || rawFile.status == 0)
             {
-                var allText = rawFile.responseText;
+                let allText = rawFile.responseText;
                 alert(allText);
             }
         }
