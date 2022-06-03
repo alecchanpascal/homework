@@ -79,10 +79,23 @@ function boxIt (array) {
     return string;
 }
 
-function main(array){
-    let input = $.csv.toObjects(array);
-    console.log(input);
-    return boxIt(input);
+function readTextFile(file)
+{
+    let XMLHttpRequest = require('xhr2');
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                var allText = rawFile.responseText;
+                alert(allText);
+            }
+        }
+    }
+    rawFile.send(null);
 }
 
-console.log(main(process.argv[2]));
+console.log(readTextFile(process.argv[2]));

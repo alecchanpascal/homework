@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo: 'no test'"
   },
-  "bin" : {
-    "boxit" : "./boxit.js",
-    "boxitcsv" : "./boxitcsv.js"
+  "bin": {
+    "boxit": "./boxit.js",
+    "boxitcsv": "./boxitcsv.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/alecchanpascal/homework"
   },
-  "homepage": "https://github.com/alecchanpascal/homework#readme"
+  "homepage": "https://github.com/alecchanpascal/homework#readme",
+  "dependencies": {
+    "xhr2": "^0.2.1"
+  }
 }
