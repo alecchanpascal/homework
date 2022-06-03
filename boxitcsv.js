@@ -1,9 +1,4 @@
 #! /usr/bin/env node
-  //setup for running without node prefix; use (npm init) and (chmod +x %filename%) to establish first then put 
-  /*"bin" : {
-    "boxit" : "./boxit.js",
-  },*/
-  //in package.json
 
 //function to draw horizontal lines - used to fill in box length
 function drawLine (num) {
@@ -84,11 +79,10 @@ function boxIt (array) {
     return string;
 }
 
-//function to seperate user input into an appropriate array of strings
 function main(array){
-    let newArray = array.slice(2, array.length);
-    return boxIt(newArray);
+    let input = $.csv.toObjects(array);
+    console.log(input);
+    return boxIt(input);
 }
 
-//output and function call
-console.log(main(process.argv));
+console.log(main(process.argv[2]));
