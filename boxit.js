@@ -14,7 +14,7 @@ function drawLine (num) {
     return line;
 }
 
-//function to draw the top border of the box given the length
+//function to draw the top border of the box given the max length
 function drawTopBorder (num) {
     let top = '';
     top += '┏';
@@ -23,7 +23,7 @@ function drawTopBorder (num) {
     return top;
 }
 
-//function to draw the middle border of the box given the length
+//function to draw the middle border of the box given the max length
 function drawMiddleBorder (num) {
     let middle = '';
     middle += '┣';
@@ -32,7 +32,7 @@ function drawMiddleBorder (num) {
     return middle;
 }
 
-//function to draw the bottom border of the box given the length
+//function to draw the bottom border of the box given the max length
 function drawBottomBorder (num) {
     let bottom = '';
     bottom += '┗';
