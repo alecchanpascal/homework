@@ -1,0 +1,23 @@
+{
+  "name": "boxit.js",
+  "version": "1.0.0",
+  "description": "package to run boxit.js without node prefix",
+  "main": "boxit.js",
+  "scripts": {
+    "test": "boxit.js",
+    "local": "boxit.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alecchanpascal/homework.git"
+  },
+  "keywords": [
+    "boxit"
+  ],
+  "author": "Alec",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/alecchanpascal/homework"
+  },
+  "homepage": "https://github.com/alecchanpascal/homework#readme"
+}
