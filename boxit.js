@@ -77,6 +77,9 @@ function boxIt (array) {
     return string;
 }
 
-//gets input from the user in the format: node boxit.js '["%string1%", "%string2%", "etc."]'
-console.log(boxIt(JSON.parse(process.argv[2])));
-  
+function main(array){
+    let newArray = array.slice(2, array.length);
+    return boxIt(newArray);
+}
+
+console.log(main(process.argv));
