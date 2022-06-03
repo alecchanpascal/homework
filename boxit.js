@@ -79,9 +79,11 @@ function boxIt (array) {
     return string;
 }
 
+//function to seperate user input into an appropriate array of strings
 function main(array){
     let newArray = array.slice(2, array.length);
     return boxIt(newArray);
 }
 
+//output and function call
 console.log(main(process.argv));
