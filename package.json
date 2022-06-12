@@ -1,0 +1,30 @@
+{
+  "name": "homework",
+  "version": "1.0.0",
+  "description": "package for turtleGraphics.js",
+  "main": "turtleGraphics.js",
+  "dependencies": {
+    "xhr2": "^0.2.1"
+  },
+  "bin" : {
+    "turtleGraphics" : "turtleGraphics.js"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test.turtleGraphics.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alecchanpascal/homework.git"
+  },
+  "keywords": [
+    "turtle",
+    "graphics"
+  ],
+  "author": "Alec",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alecchanpascal/homework/issues"
+  },
+  "homepage": "https://github.com/alecchanpascal/homework#readme"
+}

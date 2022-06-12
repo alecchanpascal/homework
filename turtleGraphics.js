@@ -1,38 +1,36 @@
+#! /usr/bin/env node
+
 class Turtle {
     constructor (x=0, y=0) {
         this.x = x;
         this.y = y;
         this.array = [[x, y]];
-        this.direction = ['east'];
+        this.direction = 'east';
     }
 
     forward(a) {
-        switch (this.direction[this.direction.length-1]) {
+        switch (this.direction) {
             case 'east':
                 for (let i = 1; i <= a; i++) {
                     this.array.push([this.x+i, this.y]);
-                    this.direction.push('east');
                 }
                 this.x += a;
                 break;
             case 'south': 
                 for(let i = 1; i <=a; i++){
                     this.array.push([this.x, this.y+i]);
-                    this.direction.push('south');
                 }
                 this.y += a;
                 break;
             case 'west':
                 for(let i = 1; i <=a; i++){
                     this.array.push([this.x-i, this.y]);
-                    this.direction.push('west');
                 }
                 this.x -=a;
                 break;
             case 'north': 
                 for(let i = 1; i <=a; i++){
                     this.array.push([this.x, this.y-i]);
-                    this.direction.push('north');
                 }
                 this.y -= a;
                 break;
@@ -41,36 +39,36 @@ class Turtle {
     }
 
     right() {
-        switch (this.direction[this.direction.length-1]) {
+        switch (this.direction) {
             case 'east':
-                this.direction.push('south');
+                this.direction = 'south';
                 break;
             case 'south': 
-                this.direction.push('west');
+                this.direction = 'west';
                 break;
             case 'west':
-                this.direction.push('north');
+                this.direction = 'north';
                 break;
             case 'north': 
-                this.direction.push('east');
+                this.direction = 'east';
                 break;
         }
         return this;
     }
 
     left() {
-        switch (this.direction[this.direction.length-1]) {
+        switch (this.direction) {
             case 'east':
-                this.direction.push('north');
+                this.direction = 'north';
                 break;
             case 'south': 
-                this.direction.push('east');
+                this.direction = 'east';
                 break;
             case 'west':
-                this.directoin.push('south');
+                this.directoin = 'south';
                 break;
             case 'north': 
-                this.direction.push('west');
+                this.direction = 'west';
                 break;
         }
         return this;
@@ -105,7 +103,13 @@ class Turtle {
             for (let j = maxWest; j <= maxEast; j++) {
                 for (let k in this.array) {
                     if (this.array[k][0] === j && this.array[k][1] === i) {
-                        string += ('■');
+                        if (this.array[0][0] === j && this.array[0][1] === i) {
+                            string += ('▣');
+                        } else if (this.array[this.array.length-1][0] === j && this.array[this.array.length-1][1]) {
+                            string += ('★')
+                        } else {
+                            string += ('■')
+                        }
                         walk = true;
                     }
                 }
@@ -122,6 +126,15 @@ class Turtle {
     }
 }
 
-const flash = new Turtle(0, 4).forward(3).left().forward(3).right().forward(5).right().forward(8).right().forward(5).right().forward(3).left().forward(3);
-flash.allPoints();
-flash.print();
+//Seperating the user input into readable directions for the class
+let string = process.argv[2];
+let start = '';
+string = string.split('-');
+start = string[0].split(',');
+let num1 = parseInt(start[1]);
+start = start[0].split('');
+let num2 = parseInt(start[1]);
+const flash = new Turtle(num1, num2);
+// const flash = new Turtle(0, 4).forward(3).left().forward(3).right().forward(5).right().forward(8).right().forward(5).right().forward(3).left().forward(3);
+// flash.allPoints();
+// flash.print();
