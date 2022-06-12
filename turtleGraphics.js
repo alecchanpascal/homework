@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 class Turtle {
+    //Constructor for the turtle class that takes an 'x' and 'y' value for the starting position and establishes an array of steps the turtle takes along with the current direction it's facing
     constructor (x=0, y=0) {
         this.x = x;
         this.y = y;
@@ -8,6 +9,7 @@ class Turtle {
         this.direction = 'east';
     }
 
+    //Method to move forward in the direction the turtle is facing given the inputed value 'a'
     forward(a) {
         switch (this.direction) {
             case 'east':
@@ -38,6 +40,7 @@ class Turtle {
         return this;
     }
 
+    //Changing the direction to the right of the current direction
     right() {
         switch (this.direction) {
             case 'east':
@@ -56,6 +59,7 @@ class Turtle {
         return this;
     }
 
+    //Changing the direction to the left of the current direction
     left() {
         switch (this.direction) {
             case 'east':
@@ -74,17 +78,22 @@ class Turtle {
         return this;
     }
 
+    //Printing out the steps the turtle took to make the path it made
     allPoints() {
         console.log(this.array);
     }
 
+    //Printing out the steps the turtle took on a grid that starts at (0,0) and goes to the max height and width that the turtle reached
     print() {
         let maxNorth = 0;
         let maxSouth = 0;
         let maxEast = 0;
         let maxWest = 0;
+        //String of the path to be printed
         let string = '';
+        //Boolean to check whether the turtle has already taken a step or not
         let walk = false;
+        //Getting the maximum width and height (negative and posititve) that the turtle walks
         for (let i in this.array) {
             if (maxEast < this.array[i][0]) {
                 maxEast = this.array[i][0];
@@ -99,42 +108,74 @@ class Turtle {
                 maxNorth = this.array[i][1];
             }
         }
+        //Iterating through the min and max width and heights to print out the grid and the turtle steps
         for (let i = maxNorth; i <= maxSouth; i++) {
             for (let j = maxWest; j <= maxEast; j++) {
+                //Checking if the turtle took a step at this point in the grid at any time
                 for (let k in this.array) {
                     if (this.array[k][0] === j && this.array[k][1] === i) {
+                        //Starting block for where the turtle starts
                         if (this.array[0][0] === j && this.array[0][1] === i) {
                             string += ('▣');
+                        //Ending star for where the turtle ends up
                         } else if (this.array[this.array.length-1][0] === j && this.array[this.array.length-1][1]) {
                             string += ('★')
+                        //Regular block for where the turtle had walked
                         } else {
                             string += ('■')
                         }
+                        //Setting walk to true so that no further printing is done for that coordinate
                         walk = true;
                     }
                 }
+                //Empty block for where the turtle hasn't walked
                 if (walk === false) {
                     string += ('□');
+                //Re-establishing the walk value
                 } else {
                     walk = false;
                 }
+                //Spacing the blocks out
                 string += ' ';
             }
+            //Going to the next row of blocks
             string += ('\n');
         }
+        //Output the result
         console.log(string);
     }
 }
 
-//Seperating the user input into readable directions for the class
+//Seperating the user input into readable directions for the class by the delimiter '-'
 let string = process.argv[2];
 let start = '';
 string = string.split('-');
+//Getting information to create an instance of the turtle class from the start of the user input by the delimiter ','
 start = string[0].split(',');
-let num1 = parseInt(start[1]);
-start = start[0].split('');
+//Saving the second or 'y' value
 let num2 = parseInt(start[1]);
+//Seperating the first or 'x' value from t and saving it
+start = start[0].split('');
+let num1 = parseInt(start[1]);
+//Declaring the instance of turtle with the saved 'x' and 'y' values
 const flash = new Turtle(num1, num2);
+//Iterating through the remaining string to enact user specified directions
+for (let i in string) {
+    switch(string[i][0]) {
+        case 'f': 
+            string[i] = string[i].slice(1,string[i].length);
+            flash.forward(parseInt(string[i]));
+            break;
+        case 'r':
+            flash.right();
+            break;
+        case 'l':
+            flash.left();
+            break;
+    }
+}
+flash.print();
+// Old pre-script functionality
 // const flash = new Turtle(0, 4).forward(3).left().forward(3).right().forward(5).right().forward(8).right().forward(5).right().forward(3).left().forward(3);
 // flash.allPoints();
 // flash.print();
