@@ -93,6 +93,8 @@ class Turtle {
         let string = '';
         //Boolean to check whether the turtle has already taken a step or not
         let walk = false;
+        //Array of coordinates to be printed
+        let arrayToPrint = this.array;
         //Getting the maximum width and height (negative and posititve) that the turtle walks
         for (let i in this.array) {
             if (maxEast < this.array[i][0]) {
@@ -108,17 +110,28 @@ class Turtle {
                 maxNorth = this.array[i][1];
             }
         }
+        for (let i in arrayToPrint) {
+            for (let j in arrayToPrint) {
+                if (i !== j && arrayToPrint[i][0] === arrayToPrint[j][0] && arrayToPrint[i][1] === arrayToPrint[j][1]) {
+                    if (j == arrayToPrint.length-1) {
+                        arrayToPrint.splice(i, 1);
+                    } else {
+                        arrayToPrint.splice(j, 1);
+                    }
+                }
+            }
+        }
         //Iterating through the min and max width and heights to print out the grid and the turtle steps
         for (let i = maxNorth; i <= maxSouth; i++) {
             for (let j = maxWest; j <= maxEast; j++) {
                 //Checking if the turtle took a step at this point in the grid at any time
-                for (let k in this.array) {
-                    if (this.array[k][0] === j && this.array[k][1] === i) {
+                for (let k in arrayToPrint) {
+                    if (arrayToPrint[k][0] === j && arrayToPrint[k][1] === i) {
                         //Starting block for where the turtle starts
-                        if (this.array[0][0] === j && this.array[0][1] === i) {
+                        if (arrayToPrint[0][0] === j && arrayToPrint[0][1] === i) {
                             string += ('▣');
                         //Ending star for where the turtle ends up
-                        } else if (this.array[this.array.length-1][0] === j && this.array[this.array.length-1][1]) {
+                        } else if (arrayToPrint[arrayToPrint.length-1][0] === j && arrayToPrint[arrayToPrint.length-1][1] === i) {
                             string += ('★')
                         //Regular block for where the turtle had walked
                         } else {
@@ -152,6 +165,7 @@ let start = '';
 string = string.split('-');
 //Getting information to create an instance of the turtle class from the start of the user input by the delimiter ','
 start = string[0].split(',');
+console.log(start[0][0]);
 //Saving the second or 'y' value
 let num2 = parseInt(start[1]);
 //Seperating the first or 'x' value from t and saving it
@@ -174,8 +188,7 @@ for (let i in string) {
             break;
     }
 }
-flash.print();
 // Old pre-script functionality
 // const flash = new Turtle(0, 4).forward(3).left().forward(3).right().forward(5).right().forward(8).right().forward(5).right().forward(3).left().forward(3);
-// flash.allPoints();
-// flash.print();
+//flash.allPoints();
+flash.print();
