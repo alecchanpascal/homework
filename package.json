@@ -7,7 +7,7 @@
     "xhr2": "^0.2.1"
   },
   "bin" : {
-    "turtleGraphics" : "turtleGraphics.js"
+    "turtleGraphics" : "./turtleGraphics.js"
   },
   "devDependencies": {},
   "scripts": {

@@ -110,14 +110,15 @@ class Turtle {
                 maxNorth = this.array[i][1];
             }
         }
+        //Getting rid of duplicate steps in the path for printing
         for (let i in arrayToPrint) {
             for (let j in arrayToPrint) {
                 if (i !== j && arrayToPrint[i][0] === arrayToPrint[j][0] && arrayToPrint[i][1] === arrayToPrint[j][1]) {
-                    if (j == arrayToPrint.length-1) {
-                        arrayToPrint.splice(i, 1);
-                    } else {
+                    // if (j == arrayToPrint.length-1) {
+                    //     arrayToPrint.splice(i, 1);
+                    // } else {
                         arrayToPrint.splice(j, 1);
-                    }
+                    //}
                 }
             }
         }
@@ -130,9 +131,9 @@ class Turtle {
                         //Starting block for where the turtle starts
                         if (arrayToPrint[0][0] === j && arrayToPrint[0][1] === i) {
                             string += ('▣');
-                        //Ending star for where the turtle ends up
-                        } else if (arrayToPrint[arrayToPrint.length-1][0] === j && arrayToPrint[arrayToPrint.length-1][1] === i) {
-                            string += ('★')
+                        // //Ending star for where the turtle ends up
+                        // } else if (arrayToPrint[arrayToPrint.length-1][0] === j && arrayToPrint[arrayToPrint.length-1][1] === i) {
+                        //     string += ('★')
                         //Regular block for where the turtle had walked
                         } else {
                             string += ('■')
@@ -155,43 +156,89 @@ class Turtle {
             string += ('\n');
         }
         //Output the result
-        console.log(string);
+        return (string);
     }
 }
 
 //Seperating the user input into readable directions for the class by the delimiter '-'
-let string = process.argv[2];
+let string = '';
 let start = '';
 let num1 = 0;
 let num2 = 0;
-string = string.split('-');
-if (string[0][0] == 't') {
-    //Getting information to create an instance of the turtle class from the start of the user input by the delimiter ','
-    start = string[0].split(',');
-    //Saving the second or 'y' value
-    num2 = parseInt(start[1]);
-    //Seperating the first or 'x' value from t and saving it
-    start = start[0].split('');
-    num1 = parseInt(start[1]);
-    //Declaring the instance of turtle with the saved 'x' and 'y' values
-}
-const flash = new Turtle(num1, num2);
-//Iterating through the remaining string to enact user specified directions
-for (let i in string) {
-    switch(string[i][0].toLowerCase()) {
-        case 'f': 
-            string[i] = string[i].slice(1,string[i].length);
-            flash.forward(parseInt(string[i]));
-            break;
-        case 'r':
-            flash.right();
-            break;
-        case 'l':
-            flash.left();
-            break;
+if (process.argv[3] !== undefined) {
+    string = process.argv[3];
+    string = string.split('-');
+    if (string[0][0] == 't') {
+        //Getting information to create an instance of the turtle class from the start of the user input by the delimiter ','
+        start = string[0].split(',');
+        //Saving the second or 'y' value
+        num2 = parseInt(start[1]);
+        //Seperating the first or 'x' value from t and saving it
+        start = start[0].split('');
+        num1 = parseInt(start[1]);
+        //Declaring the instance of turtle with the saved 'x' and 'y' values
     }
+    const flash = new Turtle(num1, num2);
+    //Iterating through the remaining string to enact user specified directions
+    for (let i in string) {
+        switch(string[i][0].toLowerCase()) {
+            case 'f': 
+                string[i] = string[i].slice(1,string[i].length);
+                flash.forward(parseInt(string[i]));
+                break;
+            case 'r':
+                flash.right();
+                break;
+            case 'l':
+                flash.left();
+                break;
+        }
+    }
+    //Creating a file with the turtle's path
+    const fs = require('fs');
+    let fileName = process.argv[2];
+    fileName = fileName.split('=');
+    fileName = fileName[1];
+    fs.writeFile(fileName, flash.print(), err => {
+    if (err) {
+        console.error(err);
+    }
+    console.log('🐢 Drawing written to drawing.txt')
+    });
+} else if (process.argv[2] !== undefined) {
+    string = process.argv[2];
+    string = string.split('-');
+    if (string[0][0] == 't') {
+        //Getting information to create an instance of the turtle class from the start of the user input by the delimiter ','
+        start = string[0].split(',');
+        //Saving the second or 'y' value
+        num2 = parseInt(start[1]);
+        //Seperating the first or 'x' value from t and saving it
+        start = start[0].split('');
+        num1 = parseInt(start[1]);
+        //Declaring the instance of turtle with the saved 'x' and 'y' values
+    }
+    const flash = new Turtle(num1, num2);
+    //Iterating through the remaining string to enact user specified directions
+    for (let i in string) {
+        switch(string[i][0].toLowerCase()) {
+            case 'f': 
+                string[i] = string[i].slice(1,string[i].length);
+                flash.forward(parseInt(string[i]));
+                break;
+            case 'r':
+                flash.right();
+                break;
+            case 'l':
+                flash.left();
+                break;
+        }
+    }
+    console.log(flash.print());
+} else {
+    // Old pre-script functionality
+    //Change values here to whatever you want to test
+    const flash = new Turtle(0, 4).forward(3).left().forward(3).right().forward(5).right().forward(8).right().forward(5).right().forward(3).left().forward(3);
+    flash.allPoints();
+    console.log(flash.print());
 }
-// Old pre-script functionality
-// const flash = new Turtle(0, 4).forward(3).left().forward(3).right().forward(5).right().forward(8).right().forward(5).right().forward(3).left().forward(3);
-//flash.allPoints();
-flash.print();
