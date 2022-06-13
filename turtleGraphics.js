@@ -1,5 +1,6 @@
 #! /usr/bin/env node
-
+//Setting up file system module
+const fs = require('fs');
 class Turtle {
     //Constructor for the turtle class that takes an 'x' and 'y' value for the starting position and establishes an array of steps the turtle takes along with the current direction it's facing
     constructor (x=0, y=0) {
@@ -195,7 +196,6 @@ if (process.argv[3] !== undefined) {
         }
     }
     //Creating a file with the turtle's path
-    const fs = require('fs');
     let fileName = process.argv[2];
     fileName = fileName.split('=');
     fileName = fileName[1];
