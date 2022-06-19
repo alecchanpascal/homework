@@ -2,6 +2,7 @@ const readline = require('readline');
 const fs = require('fs');
 const user = readline.createInterface(process.stdin, process.stdout);
 let todo;
+let string = '';
 
 function view() {
     if (todo == undefined) {
@@ -22,7 +23,7 @@ function newItem(item) {
                 todo.push(['[]', response]);
             }
             menu();
-        })
+        });
     } else {
         if (todo == undefined) {
             todo = [['[]', item]];
@@ -42,8 +43,22 @@ function deleteItem(x) {
     todo.splice(x, 1);
 }
 
+function save() {
+    string = todo.join('\n');
+    user.question('Where would you like to save the file?\n', response => {
+        fs.writeFile(response, string, err => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(`List saved to ${response}`);
+            }
+        });
+        menu();
+    });
+}
+
 function menu() {
-        user.question('(v) View • ( n ) New • (cX) Complete • (dX) Delete • (q) Quit\n', response => {
+        user.question('(v) View • ( n ) New • (cX) Complete • (dX) Delete • (s) Save • (q) Quit\n', response => {
             switch(response.length) {
                 case 1:
                     switch(response) {
@@ -53,6 +68,9 @@ function menu() {
                             break;
                         case 'n':
                             newItem();
+                            break;
+                        case 's':
+                            save();
                             break;
                         case 'q':
                             console.log('Understood. The program will now close.\nHave a good day.');
