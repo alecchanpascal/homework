@@ -11,30 +11,35 @@ function view() {
             console.log(i, todo[i][0], todo[i][1]);
         }
     }
-    return menu();
 }
 
-function newItem() {
-    user.question('What would you like to add to the list?\n', response => {
+function newItem(item) {
+    if (item === undefined) {
+        user.question('What would you like to add to the list?\n', response => {
+            if (todo == undefined) {
+                todo = [['[]', response]];
+            } else {
+                todo.push(['[]', response]);
+            }
+            menu();
+        })
+    } else {
         if (todo == undefined) {
-            todo = [['[]', response]];
+            todo = [['[]', item]];
         } else {
-            todo.push(['[]', response]);
+            todo.push(['[]', item]);
         }
-        return menu();
-    })
+    }
 }
 
 function complete(x) {
     console.log(`Completed ${todo[x][1]}`);
     todo[x][0] = '[✓]';
-    return menu();
 }
 
 function deleteItem(x) {
     console.log(`Removed ${todo[x][1]}`);
     todo.splice(x, 1);
-    return menu();
 }
 
 function menu() {
@@ -43,10 +48,11 @@ function menu() {
                 case 1:
                     switch(response) {
                         case 'v':
-                            return view();
+                            view();
+                            menu();
                             break;
                         case 'n':
-                            return newItem();
+                            newItem();
                             break;
                         case 'q':
                             console.log('Understood. The program will now close.\nHave a good day.');
@@ -54,40 +60,49 @@ function menu() {
                             break;
                         default:
                             console.log('Not a valid option.\nPlease try again');
-                            return menu();
+                            menu();
                             break;
                     }
                     break;
                 case 2:
                     switch(response[0]) {
                         case 'c':
-                            return complete(response[1]);
+                            complete(response[1]);
+                            menu();
                             break;
                         case 'd': 
-                            return deleteItem(response[1]);
+                            deleteItem(response[1]);
+                            menu();
                             break;
                         default:
                             console.log('Not a valid option.\nPlease try again.');
-                            return menu();
+                            menu();
                             break;
                     }
                     break;
                 default:
                     console.log('Not a valid option.\nPlease try again.');
-                    return menu();
+                    menu();
                     break;
             }
         })
 }
 
-if (process.argv.length > 1) {
+if (process.argv.length > 2) {
     fs.readFile(process.argv[2], 'utf8', (err, data) => {
         if (err) {
             console.log(err);
         } else {
-            new
+            let array = JSON.parse(data);
+            array.forEach(element => {
+                newItem(element.title);
+                if (element.completed === true) {
+                    complete(array.indexOf(element));
+                }
+            })
         }
-    })
+        menu();
+    });
 } else {
    menu(); 
 }
