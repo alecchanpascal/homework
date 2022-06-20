@@ -21,16 +21,13 @@ function view() {
 //Function to add new items to the todo list
 function newItem(item) {
     //Checking if any items are being passed in from a file
-    if (item === undefined) {
-        //User input based item additions
+    if (!item) {
         user.question('What would you like to add to the list?\n', response => {
-            //Adding the user response to the list
             todo.push(['[]', response]);
             //Calling menu without closing user so the user can still be prompted
             menu();
         });
     } else {
-        //Adding the file item to the list
             todo.push(['[]', item]);
     }
 }
@@ -49,89 +46,74 @@ function deleteItem(x) {
 
 //Function to save the todo list to a file
 function save() {
-    //Creating a string based off the todo list concatenated by newlines for readability
     string = todo.join('\n');
-    //Writing to file
     user.question('Where would you like to save the file?\n', response => {
-        //Saving the todo list to the path specified by the user
         fs.writeFile(response, string, err => {
             if (err) {
                 console.log(err);
             } else {
                 console.log(`List saved to ${response}`);
+                //Calling the menu function without closing user so the user can still be prompted
+                menu();
             }
         });
-        //Calling the menu function without closing user so the user can still be prompted
-        menu();
     });
 }
 
 //Function to oversee the menu operations and user prompt
 function menu() {
-        user.question('(v) View • ( n ) New • (cX) Complete • (dX) Delete • (s) Save • (q) Quit\n', response => {
-            //Checking to determine which type of option the user selected
-            switch(response.length) {
-                case 1:
-                    //Checking to determine which one length option was chosen and calling the related function
-                    switch(response) {
-                        //View option
-                        case 'v':
-                            view();
-                            //Menu function is called after every option except for new, save and quit to get further user input
-                            menu();
-                            break;
-                        //New option
-                        case 'n':
-                            //New, save, and quit do not call menu as they have differing functionality that needs the menu call to be elsewhere or excluded
-                            newItem();
-                            break;
-                        //Save option
-                        case 's':
-                            //Calling the menu after option function instead of in the option function breaks functionality for new and save
-                            save();
-                            break;
-                        //Quit option which closes the user thus ending the program
-                        case 'q':
-                            //Quit does not call menu again for obvious reasons
-                            console.log('Understood. The program will now close.\nHave a good day.');
-                            user.close();
-                            break;
-                        //Default case for any other responses as invalid
-                        default:
-                            console.log('Not a valid option.\nPlease try again');
-                            menu();
-                            break;
-                    }
-                    break;
-                case 2:
-                    //Checking to determine which two length response was chosen and calling the related function
-                    switch(response[0]) {
-                        //Complete option
-                        case 'c':
-                            complete(response[1]);
-                            //Menu call is usually after option function call to ensure functionality for the reading in of a todo list from a file
-                            menu();
-                            break;
-                        //Delete option
-                        case 'd': 
-                            deleteItem(response[1]);
-                            //Otherwise menu call can interrupt the todo list being read in from the file, so it is only called after options in the menu itself
-                            menu();
-                            break;
-                        //Default case for any other responses as invalid
-                        default:
-                            console.log('Not a valid option.\nPlease try again.');
-                            menu();
-                            break;
-                    }
-                    break;
-                //Default case for any other responses as invalid
-                default:
-                    console.log('Not a valid option.\nPlease try again.');
-                    menu();
-                    break;
-            }
-        })
+    user.question('(v) View • ( n ) New • (cX) Complete • (dX) Delete • (s) Save • (q) Quit\n', response => {
+        //Checking to determine which type of option the user selected
+        switch(response.length) {
+            case 1:
+                //Checking to determine which one length option was chosen and calling the related function
+                switch(response) {
+                    case 'v':
+                        view();
+                        menu();
+                        break;
+                    case 'n':
+                        //New, save, and quit do not call menu as they have differing functionality that needs the menu call to be elsewhere or excluded
+                        newItem();
+                        break;
+                    case 's':
+                        //Calling the menu after option function instead of in the option function breaks functionality for new and save
+                        save();
+                        break;
+                    //Quit option which closes the user thus ending the program
+                    case 'q':
+                        console.log('Understood. The program will now close.\nHave a good day.');
+                        user.close();
+                        break;
+                    default:
+                        console.log('Not a valid option.\nPlease try again');
+                        menu();
+                        break;
+                }
+                break;
+            case 2:
+                //Checking to determine which two length response was chosen and calling the related function
+                switch(response[0]) {
+                    case 'c':
+                        complete(response[1]);
+                        menu();
+                        break;
+                    case 'd': 
+                        deleteItem(response[1]);
+                        menu();
+                        break;
+                    default:
+                        console.log('Not a valid option.\nPlease try again.');
+                        menu();
+                        break;
+                }
+                break;
+            default:
+                console.log('Not a valid option.\nPlease try again.');
+                menu();
+                break;
+        }
+    })
 }
 
 //Checking if there was a filename to be read passed in on program call
@@ -145,13 +127,11 @@ if (process.argv.length > 2) {
             let array = JSON.parse(data);
             array.forEach(element => {
                 newItem(element.title);
-                //Checking if the current item should be marked as complete or not
                 if (element.completed === true) {
                     complete(array.indexOf(element));
                 }
             })
         }
-        //Calling menu to allow augmentation of the read in list by the user
         menu();
     });
 //Regular user input based todo list call
