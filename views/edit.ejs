@@ -1,0 +1,14 @@
+<%- include('../partials/header') %>
+<h1>Edit Cohort</h1>
+<form method="POST" action="/cohorts/<%= cohorts.id %>">
+  <input type="hidden" name="_method" value="PATCH" />
+  <div class="form-group">
+    <textarea
+      class="form-control"
+      name="content"
+      placeholder="What are your thoughts?"
+    ><%= notes.content %></textarea>
+  </div>
+  <input type="submit" class="btn btn-outline-success" value="Submit" />
+</form>
+<%- include('../partials/footer') %>
