@@ -1,14 +1,19 @@
-<%- include('../partials/header') %>
+<%- include('./partials/header') %>
 <h1>Edit Cohort</h1>
 <form method="POST" action="/cohorts/<%= cohorts.id %>">
   <input type="hidden" name="_method" value="PATCH" />
   <div class="form-group">
-    <textarea
-      class="form-control"
-      name="content"
-      placeholder="What are your thoughts?"
-    ><%= notes.content %></textarea>
+    <textarea class="form-control" name="imageUrl" ><%= cohorts.imageUrl %></textarea>
   </div>
+  <br>
+  <div class="form-group">
+    <textarea class="form-control" name="name" ><%= cohorts.name %></textarea>
+  </div>
+  <br>
+  <div class="form-group">
+    <textarea class="form-control" name="members" ><%= cohorts.members %></textarea>
+  </div>
+  <br>
   <input type="submit" class="btn btn-outline-success" value="Submit" />
 </form>
-<%- include('../partials/footer') %>
+<%- include('./partials/footer') %>

@@ -1,0 +1,16 @@
+<%- include('./partials/header') %>
+<%if (cohorts) { %>
+    <% cohorts.forEach(element => { %>
+        <div class="card">
+            <div class="card-body">
+                <div id="title">
+                    <img class="card-img-top" src=<%= element.imageUrl %> alt="Card image cap" id="image" class="img-thumbnail">
+                    <h5 class="card-title"><%= element.name %></h5>
+                </div>
+                <p class="card-text"><%= element.members %></p>
+                <a href="/cohorts/<%- element.id %>" class="btn btn-primary">Show Cohort</a>
+            </div>
+        </div>
+    <% }) %>
+<% } %>
+<%- include('./partials/footer') %>

@@ -1,0 +1,49 @@
+#brand {
+    margin-left: 1rem;
+}
+
+#navbarNav {
+    margin-right: 1rem;
+}
+
+#title {
+    display: flex;
+}
+
+#form {
+    margin: 1rem;
+}
+
+#image {
+    max-width: 1.5rem;
+    max-height: 1.5rem;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+
+#buttons {
+    display: flex;
+}
+
+.card {
+    margin: 1rem;
+}
+
+#submitButton {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#inline {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#number {
+    margin-right: 3rem;
+}
+
+#members {
+    display: flex;
+    flex-wrap: wrap;
+}
