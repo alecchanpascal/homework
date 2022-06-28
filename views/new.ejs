@@ -1,0 +1,22 @@
+<!-- View page for creating a new cohort -->
+<%- include('./partials/header') %>
+<form method="POST" action="/cohorts" id="form">
+    <div class="form-group">
+      <label for="imageUrl">Logo Url</label>
+      <br>
+      <input type="text" class="form-control" name="imageUrl" placeholder="e.g. https://www.example.com/some.png" id="imageUrl">
+      <br>
+      <label for="name">Name</label>
+      <br>
+      <input type="text" class="form-control" name="name" placeholder="Flying Funks">
+      <br>
+      <label for="members">Members</label>
+      <br>
+      <textarea class="form-control" name="members" placeholder="Jon Snow, Daenerys, Melisandre, Arya Stark" rows="4"></textarea>
+    </div>
+    <br>
+    <div id="submitButton">
+    <input type="submit" class="btn btn-outline-primary" value="Submit"/>
+    </div>
+</form>
+<%- include('./partials/footer') %>
