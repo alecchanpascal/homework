@@ -60,6 +60,7 @@
     flex-wrap: wrap;
 }
 
+/* Mobile View - change header font size so that everything fits in screen properly */
 @media (max-width: 450px) {
     header, nav, a{
         font-size: 95%;

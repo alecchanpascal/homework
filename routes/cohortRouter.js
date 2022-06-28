@@ -1,8 +1,11 @@
+//Calling the various required modules
 const { response } = require("express");
 const express = require("express");
 const knex = require("../client");
 const router = express.Router();
+const fix = require('./membersFix');
 
+//GET method for the base /cohorts page
 router.get('/', (request, response) => {
     knex('cohorts').orderBy('createdAt', 'desc')
     .then(cohorts => {
@@ -10,62 +13,34 @@ router.get('/', (request, response) => {
     });
 });
 
+//GET method for the /cohorts/new page
 router.get('/new', (request, response) => {
     response.render('new');
 });
 
+//POST method for the /cohorts page from the /cohorts/new page
 router.post('/', (request, response) => {
+    //Calls on a fix function from membersFix.js to solve any newline/empty space problems in the members list
+    let members = fix.fix(request.body.members)
     knex('cohorts').insert({
         imageUrl: request.body.imageUrl,
         name: request.body.name,
-        members: request.body.members
+        members: members.toString()
     }).returning('*').then(cohorts => {
         response.redirect(`/cohorts/${cohorts[0].id}`);
     });
 });
 
+//GET method for a specific cohort given the id
 router.get('/:id', (request, response) => {
     knex('cohorts').where('id', request.params.id).first()
     .then(cohorts => {
         if (cohorts) {
             let members = cohorts.members.split(',');
-            members.forEach(element => {
-                members[members.indexOf(element)] = element.split("\r\n");
-            });
-            members = members.flat();
-            console.log(members);
-            members.forEach(element => {
-                if (element == ' ' || element == '') {
-                    members[(members.indexOf(element))+1] = ' ' + members[(members.indexOf(element))+1];
-                    members.splice(members.indexOf(element), 1);
-                }
-            });
-            console.log(members);
             const method = request.query.method;
             const quantity = parseInt(request.query.quantity);
             const count = Math.ceil(members.length/quantity);
-            let result;
-            if (method == 'teamCount') {
-                result = [];
-                for (let i = 0; i < quantity; i++) {
-                    result[i] = [];
-                    for (let j = (i*count); j < (i*count)+count; j++) {
-                        if (members[j]) {
-                            result[i].push(members[j]);
-                        }
-                    }
-                }
-            } else if (method == 'perTeam') {
-                result = [];
-                for (let i = 0; i < count; i++) {
-                    result[i] = [];
-                    for (let j = (i*quantity); j < (i*quantity)+quantity; j++) {
-                        if (members[j]) {
-                            result[i].push(members[j]);
-                        }
-                    }
-                }
-            }
+            let result = fix.assignment(members, method, quantity, count);
             response.render('show', {
                 cohorts: cohorts,
                 result: result
@@ -91,11 +66,12 @@ router.get('/:id/edit', (request, response) => {
 });
 
 router.patch('/:id', (request, response) => {
+    let members = fix.fix(request.body.members);
     knex('cohorts').where('id', request.params.id).first()
     .update({
         imageUrl: request.body.imageUrl,
         name: request.body.name,
-        members: request.body.members
+        members: members.toString()
     }).then(() => {
         response.redirect(`/cohorts/${request.params.id}`);
     });
