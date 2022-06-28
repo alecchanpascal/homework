@@ -29,10 +29,18 @@ router.get('/:id', (request, response) => {
     .then(cohorts => {
         if (cohorts) {
             let members = cohorts.members.split(',');
-            // members.forEach(element => {
-            //     element = element.replaceAll("[\\r\\n]+", '');
-            // }) ask the TAs about this
-            // console.log(members);
+            members.forEach(element => {
+                members[members.indexOf(element)] = element.split("\r\n");
+            });
+            members = members.flat();
+            console.log(members);
+            members.forEach(element => {
+                if (element == ' ' || element == '') {
+                    members[(members.indexOf(element))+1] = ' ' + members[(members.indexOf(element))+1];
+                    members.splice(members.indexOf(element), 1);
+                }
+            });
+            console.log(members);
             const method = request.query.method;
             const quantity = parseInt(request.query.quantity);
             const count = Math.ceil(members.length/quantity);
