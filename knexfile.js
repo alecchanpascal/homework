@@ -1,4 +1,4 @@
-// Update with your config settings.
+// knexfile for this specific project (Don't forget to change username and password as needed)
 
 /**
  * @type { Object.<string, import("knex").Knex.Config> }

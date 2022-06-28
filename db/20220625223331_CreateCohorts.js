@@ -2,6 +2,7 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
+//Function to create the cohorts table
 exports.up = function(knex) {
     return knex.schema.createTable('cohorts', table => {
         table.increments('id');
@@ -16,6 +17,7 @@ exports.up = function(knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
+//Function to delete the cohorts table
 exports.down = function(knex) {
   return knex.schema.dropTable('cohorts');
 };

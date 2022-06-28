@@ -1,11 +1,11 @@
-//Calling the various required modules
+//Calling the various required modules for express, knex, router and the membersFix
 const { response } = require("express");
 const express = require("express");
 const knex = require("../client");
 const router = express.Router();
 const fix = require('./membersFix');
 
-//GET method for the base /cohorts page
+//GET method for the base '/cohorts' page
 router.get('/', (request, response) => {
     knex('cohorts').orderBy('createdAt', 'desc')
     .then(cohorts => {
@@ -13,22 +13,27 @@ router.get('/', (request, response) => {
     });
 });
 
-//GET method for the /cohorts/new page
+//GET method for the '/cohorts/new' page
 router.get('/new', (request, response) => {
     response.render('new');
 });
 
-//POST method for the /cohorts page from the /cohorts/new page
+//POST method for the '/cohorts' page from the '/cohorts/new' page
 router.post('/', (request, response) => {
-    //Calls on a fix function from membersFix.js to solve any newline/empty space problems in the members list
-    let members = fix.fix(request.body.members)
-    knex('cohorts').insert({
-        imageUrl: request.body.imageUrl,
-        name: request.body.name,
-        members: members.toString()
-    }).returning('*').then(cohorts => {
-        response.redirect(`/cohorts/${cohorts[0].id}`);
-    });
+    //Makes sure the fields are populated, otherwise reloads the page
+    if (request.body.members && request.body.name && request.body.imageUrl) {
+        //Calls on a fix function from membersFix.js to solve any newline/empty space problems in the members list
+        let members = fix.fix(request.body.members)
+        knex('cohorts').insert({
+            imageUrl: request.body.imageUrl,
+            name: request.body.name,
+            members: members.toString()
+        }).returning('*').then(cohorts => {
+            response.redirect(`/cohorts/${cohorts[0].id}`);
+        });
+    } else {
+        response.redirect('/cohorts/new');
+    }
 });
 
 //GET method for a specific cohort given the id
@@ -39,8 +44,8 @@ router.get('/:id', (request, response) => {
             let members = cohorts.members.split(',');
             const method = request.query.method;
             const quantity = parseInt(request.query.quantity);
-            const count = Math.ceil(members.length/quantity);
-            let result = fix.assignment(members, method, quantity, count);
+            //Calls a method from membersFix.js to determine the team assignment given the user's choices
+            let result = fix.assignment(members, method, quantity);
             response.render('show', {
                 cohorts: cohorts,
                 result: result
@@ -51,6 +56,7 @@ router.get('/:id', (request, response) => {
     });
 });
 
+//DELETE method to delete a specific cohort
 router.delete('/:id', (request, response) => {
     knex('cohorts').where('id', request.params.id).first()
     .del().then(() => {
@@ -58,6 +64,7 @@ router.delete('/:id', (request, response) => {
     });
 });
 
+//GET method to get the edit page of a specific cohort
 router.get('/:id/edit', (request, response) => {
     knex('cohorts').where('id', request.params.id).first()
     .then(cohorts => {
@@ -65,16 +72,24 @@ router.get('/:id/edit', (request, response) => {
     });
 });
 
+//PATCH method to update a given cohort given the information from the edit page
 router.patch('/:id', (request, response) => {
-    let members = fix.fix(request.body.members);
-    knex('cohorts').where('id', request.params.id).first()
-    .update({
-        imageUrl: request.body.imageUrl,
-        name: request.body.name,
-        members: members.toString()
-    }).then(() => {
-        response.redirect(`/cohorts/${request.params.id}`);
-    });
+    //Makes sure all fields are populated, otherwise it reloads the page
+    if (request.body.members && request.body.name && request.body.imageUrl) {
+        //Calls on the fix method from membersFix.js to take care of newline/empty characters
+        let members = fix.fix(request.body.members);
+        knex('cohorts').where('id', request.params.id).first()
+        .update({
+            imageUrl: request.body.imageUrl,
+            name: request.body.name,
+            members: members.toString()
+        }).then(() => {
+            response.redirect(`/cohorts/${request.params.id}`);
+        });
+    } else {
+        response.redirect(`/cohorts/${request.params.id}/edit`);
+    }
 });
 
+//Export for use in index.js
 module.exports = router;
