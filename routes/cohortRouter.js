@@ -5,12 +5,23 @@ const knex = require("../client");
 const router = express.Router();
 const fix = require('./membersFix');
 
-//GET method for the base '/cohorts' page
+//GET method for the base '/cohorts' page with a search bar to find cohort by name
 router.get('/', (request, response) => {
-    knex('cohorts').orderBy('createdAt', 'desc')
-    .then(cohorts => {
-        response.render('cohorts', {cohorts: cohorts});
-    });
+    if (!request.query.name) {
+        knex('cohorts').orderBy('createdAt', 'desc')
+        .then(cohorts => {
+            response.render('cohorts', {cohorts: cohorts});
+        });
+    } else {
+        knex('cohorts').where('name', 'ilike', request.query.name).first()
+        .then(cohorts => {
+            if (cohorts) {
+                response.redirect(`/cohorts/${cohorts.id}`);
+            } else {
+                response.render('notFound');
+            }
+        });
+    }
 });
 
 //GET method for the '/cohorts/new' page
@@ -51,7 +62,7 @@ router.get('/:id', (request, response) => {
                 result: result
             });
         } else {
-            response.send('Error [Cohort No Cohort]: Cohort Not Found');
+            response.render('notFound');
         }
     });
 });

@@ -36,6 +36,16 @@
     margin-right: 1rem;
 }
 
+#search {
+    margin: 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#bar {
+    display: flex;
+}
+
 /* new */
 #submitButton {
     display: flex;
