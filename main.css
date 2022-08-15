@@ -1,0 +1,19 @@
+body{
+    margin: 1rem;
+}
+
+.highlight {
+    background-color: orange !important;
+}
+
+#letters {
+    display: flex;
+}
+
+h1#end{
+    margin-right: 1rem;
+}
+
+h1{
+    text-decoration: underline;
+}
