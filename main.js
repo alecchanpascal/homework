@@ -3,10 +3,15 @@ let guess = 0
 const space = String.fromCharCode(20)
 const words = [
     "stranger",
-    "nothing"
+    "nothing",
+    "something"
 ]
 
-$(document).ready(hangman = () => {
+$(document).ready(function() {
+    if (document.cookie){
+        console.log(document.cookie)
+        word = parseInt(document.cookie.split('=')[1])
+    }
     $('img').hide()
     $('#0').show()
     $('h1').remove()
@@ -20,6 +25,9 @@ $(document).ready(hangman = () => {
         $('#letters').append(`<h1 class="${i}">${space}</h1>`)
         $('#letters').append(`<h1 id="end">${space}</h1>`)
     }
+    $(document).on('keypress', event => {
+        console.log(String.fromCharCode(event.which).toUpperCase())
+    })
     $('button').click(function() {
         $(this).addClass('highlight')
         $(this).addClass('disabled')
@@ -34,15 +42,20 @@ $(document).ready(hangman = () => {
             if (left === 0){
                 word++
                 if (word >= words.length){
-                    alert("You Won!")
+                    if (confirm("You've Guessed Every Word!\nWould You Like to Restart?")){
+                        document.cookie = 'username=0; expires=0'
+                        location.reload()
+                    } else {
+                        // win page or something?
+                    }
                 } else {
                     if (confirm("You Win!\nWould You Like to Keep Playing?")){
-                        guess = 0
-                        hangman()
+                        document.cookie = `username=${word}; expires=0`
+                        location.reload()
                     } else {
                         $('#buttons').hide()
+                        // display a win page or something?
                     }
-                    // display a win page or something?
                 }
             }
         } else {
@@ -51,8 +64,8 @@ $(document).ready(hangman = () => {
             $(`#${guess}`).show()
             if (guess === 6){
                 if (confirm("You Lose!\nWould You Like to Try Again?")){
-                    guess = 0
-                    hangman()
+                    document.cookie = `username=${word}; expires=0`
+                    location.reload()
                 } else {
                     $('#buttons').hide()
                     $('#letters').hide()
