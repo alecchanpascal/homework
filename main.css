@@ -2,7 +2,6 @@ body{
     margin: 1rem;
 }
 
-
 .highlight {
     background-color: orange !important;
 }
@@ -17,4 +16,9 @@ h1#end{
 
 h1{
     text-decoration: underline;
+}
+
+#reset{
+    display: flex;
+    justify-content: center;
 }
